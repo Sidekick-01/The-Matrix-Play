@@ -1,0 +1,206 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=2000') no-repeat center center fixed;
+  background-size: cover;
+  color: #00ff41;
+  font-family: 'Fira Code', monospace;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 1rem;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #004d00;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.header span {
+  color: white;
+}
+
+.scene {
+  perspective: 1600px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.squad {
+  display: flex;
+  gap: 3.5rem;
+  transform-style: preserve-3d;
+}
+
+.squad.hover-active {
+  gap: 1.2rem;
+  transform: translateX(0) scale(1.04);
+}
+
+.squad.hover-leftmost  { transform: translateX(12%) scale(1.04); }
+.squad.hover-left      { transform: translateX(6%)  scale(1.04); }
+.squad.hover-right     { transform: translateX(-6%) scale(1.04); }
+.squad.hover-rightmost { transform: translateX(-12%) scale(1.04); }
+
+.monitor {
+  width: 220px;
+  min-height: 320px;
+  background: rgba(0, 15, 0, 0.82);
+  border: 3px solid #00ff41;
+  box-shadow: 0 0 25px rgba(0, 255, 65, 0.25), inset 0 0 15px rgba(0, 255, 65, 0.12);
+  padding: 1rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.monitor:hover {
+  transform: translateZ(220px) scale(1.22) !important;
+  z-index: 100;
+  border-color: white;
+  box-shadow: 0 0 70px rgba(255,255,255,0.45);
+  cursor: pointer;
+}
+
+.monitor-leftmost  { transform: rotateY(38deg)  translateZ(55px); }
+.monitor-left      { transform: rotateY(20deg)  translateZ(35px); }
+.monitor-center    { transform: rotateY(0deg)   translateZ(0px); scale: 1.1; border-color: rgba(255,255,255,0.7); box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+.monitor-right     { transform: rotateY(-20deg) translateZ(35px); }
+.monitor-rightmost { transform: rotateY(-38deg) translateZ(55px); }
+
+.profile {
+  width: 100%;
+  height: 140px;
+  background: black;
+  border: 2px solid #004d00;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5.5rem;
+  overflow: hidden;
+}
+
+.monitor:hover .profile {
+  height: 110px;
+}
+
+.status {
+  font-size: 0.75rem;
+  color: #00cc33;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.status.bright { color: white; font-weight: bold; }
+.status.dim    { color: #666; }
+
+.chat {
+  font-size: 0.9rem;
+  line-height: 1.35;
+  height: 100px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid #003300;
+}
+
+.monitor:hover .chat {
+  height: 130px;
+  padding: 0.8rem;
+}
+
+.chat.bright { color: white; }
+.chat.dim    { color: #666; }
+
+.game-area {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  padding: 0 2rem 6rem;
+  margin-top: auto;
+}
+
+.game-btn {
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #004d00;
+  padding: 1rem;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.game-btn:hover {
+  border-color: white;
+}
+
+.game-title {
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.game-subtitle {
+  color: #00cc33;
+  font-size: 0.7rem;
+}
+
+.command-bar {
+  background: rgba(0,0,0,0.85);
+  border-top: 2px solid #004d00;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.command-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.command-inner input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #00ff9d;
+  font-size: 1.1rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.command-inner span:first-child {
+  color: #00ff41;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.blink {
+  animation: blink 1.2s step-end infinite;
+  color: #00cc33;
+  font-size: 1.5rem;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(0,0,0,0.14) 2px, rgba(0,0,0,0.14) 4px);
+  pointer-events: none;
+  z-index: 999;
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlavorLobby | Orbital Command</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div>FLAVOR_LOBBY // <span>MOON_STATION</span></div>
+    <div>38.4479° N, 23.6192° W</div>
+  </header>
+
+  <div class="scene" id="scene">
+    <div class="squad" id="squad">
+
+      <div class="monitor monitor-leftmost">
+        <div class="status">Commander - 1 – ONLINE</div>
+        <div class="profile">|00|</div>
+        <div class="chat">
+          <span class="blink">|</span>
+        </div>
+      </div>
+
+      <div class="monitor monitor-left">
+        <div class="status dim">Commander - 2</div>
+        <div class="profile dim">(00)</div>
+        <div class="chat dim">
+          <span class="blink">|</span>
+        </div>
+      </div>
+
+      <div class="monitor monitor-center">
+        <div class="status bright">COMMANDER (YOU) – ACTIVE</div>
+        <div class="profile">👨‍🚀</div>
+        <div class="chat bright">
+          Earth looks small from here.<br>
+          All terminals nominal.<br>
+          Awaiting orders...
+        </div>
+      </div>
+
+      <div class="monitor monitor-right">
+        <div class="status">SNAKE_SYSTEM – LIVE</div>
+        <div class="profile">🐍</div>
+        <div class="chat">
+          Length: 38<br>
+          Score: 420<br>
+          <span class="blink">→</span>
+        </div>
+      </div>
+
+      <div class="monitor monitor-rightmost">
+        <div class="status">LOBBY_CHAT – OPEN</div>
+        <div class="profile">💬</div>
+        <div class="chat">
+          Shallow: yo moon crew<br>
+          PlayerX: gg wp<br>
+          <span class="blink">_</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="game-area">
+    <button class="game-btn">
+      <div class="game-title">Snake</div>
+      <div class="game-subtitle">Classic snake game</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Block Drop</div>
+      <div class="game-subtitle">Tetris style</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Sumo Arena</div>
+      <div class="game-subtitle">Push opponents out</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Chat Cipher</div>
+      <div class="game-subtitle">Decode messages</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Zero-G Bounce</div>
+      <div class="game-subtitle">Space ball fun</div>
+    </button>
+  </div>
+
+  <div class="command-bar">
+    <div class="command-inner">
+      <span>$</span>
+      <input type="text" placeholder="ENTER COMMAND OR CHAT..." />
+      <span class="blink">_</span>
+    </div>
+  </div>
+
+  <script>
+    const squad = document.getElementById('squad');
+    const monitors = document.querySelectorAll('.monitor');
+    let currentHover = '';
+
+    monitors.forEach(mon => {
+      mon.addEventListener('mouseenter', () => {
+        squad.classList.add('hover-active');
+        const pos = mon.classList.contains('monitor-leftmost') ? 'leftmost' :
+                    mon.classList.contains('monitor-left')     ? 'left' :
+                    mon.classList.contains('monitor-right')    ? 'right' :
+                    mon.classList.contains('monitor-rightmost')? 'rightmost' : '';
+        currentHover = `hover-${pos}`;
+        if (currentHover) squad.classList.add(currentHover);
+      });
+
+      mon.addEventListener('mouseleave', () => {
+        squad.classList.remove('hover-active');
+        if (currentHover) squad.classList.remove(currentHover);
+        currentHover = '';
+      });
+    });
+  </script>
+
+</body>
+</html>
