@@ -1,7 +1,7 @@
 body {
   margin: 0;
   height: 100vh;
-  background: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=2000') no-repeat center center fixed;
+  background: url('gbackgroundpng.png') no-repeat center center fixed;
   background-size: cover;
   color: #00ff41;
   font-family: 'Fira Code', monospace;
@@ -203,4 +203,5 @@ body::after {
   background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(0,0,0,0.14) 2px, rgba(0,0,0,0.14) 4px);
   pointer-events: none;
   z-index: 999;
+
 }
