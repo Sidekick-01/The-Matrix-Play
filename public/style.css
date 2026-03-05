@@ -1,0 +1,196 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: url('gbackgrounfpng.png') center/cover no-repeat fixed;
+  color: #00ff41;
+  font-family: 'Fira Code', monospace;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 1rem 1.5rem;
+  background: rgba(0,0,0,0.7);
+  border-bottom: 1px solid #004d00aa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.header span {
+  color: white;
+}
+
+.scene {
+  perspective: 1400px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.squad {
+  display: flex;
+  gap: 3rem;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+}
+
+.monitor {
+  width: 240px;
+  min-height: 300px;
+  background: rgba(0,20,10,0.9);
+  border: 2px solid #00ff4188;
+  border-radius: 6px;
+  padding: 1rem;
+  box-shadow: 0 0 20px #00ff4122;
+  transition: all 0.4s;
+  transform-style: preserve-3d;
+}
+
+.monitor:hover {
+  transform: translateZ(180px) scale(1.15);
+  border-color: #00ff41;
+  box-shadow: 0 0 40px #00ff4144;
+  z-index: 10;
+}
+
+.monitor-leftmost  { transform: rotateY(32deg) translateZ(50px); }
+.monitor-left      { transform: rotateY(16deg) translateZ(30px); }
+.monitor-center    { transform: rotateY(0) translateZ(10px) scale(1.08); }
+.monitor-right     { transform: rotateY(-16deg) translateZ(30px); }
+.monitor-rightmost { transform: rotateY(-32deg) translateZ(50px); }
+
+.squad.hover-leftmost  { transform: translateX(10%) scale(1.03); }
+.squad.hover-left      { transform: translateX(5%) scale(1.03); }
+.squad.hover-right     { transform: translateX(-5%) scale(1.03); }
+.squad.hover-rightmost { transform: translateX(-10%) scale(1.03); }
+
+.profile {
+  height: 130px;
+  background: black;
+  border: 1px solid #004d00;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5.5rem;
+  transition: height 0.4s;
+}
+
+.monitor:hover .profile {
+  height: 110px;
+}
+
+.status {
+  font-size: 0.8rem;
+  color: #00cc33;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.status.bright { color: white; font-weight: bold; }
+.status.dim    { color: #555; }
+
+.chat {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  height: 90px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #003300;
+  transition: height 0.4s;
+}
+
+.monitor:hover .chat {
+  height: 120px;
+}
+
+.game-area {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem 1rem 7rem;
+  margin-top: auto;
+}
+
+.game-btn {
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #004d00;
+  padding: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.game-btn:hover {
+  border-color: #00ff41;
+  transform: translateY(-4px);
+}
+
+.game-title {
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.game-subtitle {
+  color: #00cc33;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+
+.command-bar {
+  background: rgba(0,0,0,0.85);
+  border-top: 2px solid #004d00aa;
+  padding: 1rem 1.5rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  backdrop-filter: blur(4px);
+}
+
+.command-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.command-inner input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #00ff9d;
+  font-size: 1.1rem;
+  outline: none;
+}
+
+.command-inner span:first-child {
+  color: #00ff41;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+.blink {
+  animation: blink 1.2s infinite step-end;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .scene { perspective: 800px; }
+  .monitor { transform: none !important; width: 100%; max-width: 340px; }
+  .monitor:hover { transform: translateY(-8px) scale(1.06) !important; }
+  .squad { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+  .squad[class*="hover-"] { transform: none !important; }
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Matrix Play</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js">
+</head>
+<body>
+
+  <div class="header">
+    <div> The Milky Way <span>Earth</span></div>
+  </div>
+
+  <div class="scene" id="scene">
+    <div class="squad" id="squad">
+
+      <div class="monitor monitor-leftmost">
+        <div class="status">Commander - 1 – ONLINE</div>
+        <div class="profile">|00|</div>
+        <div class="chat">
+          <span class="blink">></span>
+        </div>
+      </div>
+
+      <div class="monitor monitor-left">
+        <div class="status dim">Commander - 2</div>
+        <div class="profile dim">(00)</div>
+        <div class="chat dim">
+          <span class="blink">></span>
+        </div>
+      </div>
+
+      <div class="monitor monitor-center">
+        <div class="status bright">COMMANDER (YOU) – ACTIVE</div>
+        <div class="profile">{oo}</div>
+        <div class="chat bright">
+          Earth looks small from here.<br>
+          All terminals nominal.<br>
+          Awaiting orders...
+        </div>
+      </div>
+
+      <div class="monitor monitor-right">
+        <div class="status">SNAKE_SYSTEM – LIVE</div>
+        <div class="profile">{99}</div>
+        <div class="chat">
+          <span class="blink">></span>
+        </div>
+      </div>
+
+      <div class="monitor monitor-rightmost">
+        <div class="status">LOBBY_CHAT – OPEN</div>
+        <div class="profile">(66)</div>
+        <div class="chat">
+          <span class="blink">></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="game-area">
+    <button class="game-btn">
+      <div class="game-title">Tic-Tac-Toe</div>
+      <div class="game-subtitle">Classic game</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Dice-Race</div>
+      <div class="game-subtitle">Your Luck in Computer's Cpu</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">The-Tournamnet</div>
+      <div class="game-subtitle">Combination Of Games</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Guess_the_word</div>
+      <div class="game-subtitle">Take Your Dictionaries</div>
+    </button>
+
+    <button class="game-btn">
+      <div class="game-title">Guess_the_number</div>
+      <div class="game-subtitle">Let the 7yrs PLay</div>
+    </button>
+  </div>
+
+  <div class="command-bar">
+    <div class="command-inner">
+      <span>$</span>
+      <span class="blink">_</span>
+      <input type="text" placeholder="ENTER COMMAND OR CHAT..." />
+      
+    </div>
+  </div>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const socket = io()
+
+const input = document.querySelector("input")
+const chat = document.querySelector(".monitor-rightmost .chat")
+
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    socket.emit("chat message", input.value)
+    input.value = ""
+  }
+})
+
+socket.on("chat message", function(msg){
+  chat.innerHTML += msg + "<br>"
+})
+</script>
+</body>
+</html>
