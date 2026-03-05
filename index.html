@@ -5,15 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Matrix Play</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style_test.css" />
 </head>
 <body>
 
-  <header class="header">
-    <div>The Matrix Play//</div>
-    <div>Milky Way</div>
-  </header>
+  <div class="header">
+    <div> The Milky Way <span>Earth</span></div>
+  </div>
 
   <div class="scene" id="scene">
     <div class="squad" id="squad">
@@ -22,7 +20,7 @@
         <div class="status">Commander - 1 – ONLINE</div>
         <div class="profile">|00|</div>
         <div class="chat">
-          <span class="blink">|</span>
+          <span class="blink">></span>
         </div>
       </div>
 
@@ -30,13 +28,13 @@
         <div class="status dim">Commander - 2</div>
         <div class="profile dim">(00)</div>
         <div class="chat dim">
-          <span class="blink">|</span>
+          <span class="blink">></span>
         </div>
       </div>
 
       <div class="monitor monitor-center">
         <div class="status bright">COMMANDER (YOU) – ACTIVE</div>
-        <div class="profile">(OO)</div>
+        <div class="profile">{oo}</div>
         <div class="chat bright">
           Earth looks small from here.<br>
           All terminals nominal.<br>
@@ -46,21 +44,17 @@
 
       <div class="monitor monitor-right">
         <div class="status">SNAKE_SYSTEM – LIVE</div>
-        <div class="profile">[00]</div>
+        <div class="profile">{99}</div>
         <div class="chat">
-          Length: 38<br>
-          Score: 420<br>
-          <span class="blink">→</span>
+          <span class="blink">></span>
         </div>
       </div>
 
       <div class="monitor monitor-rightmost">
         <div class="status">LOBBY_CHAT – OPEN</div>
-        <div class="profile">{00}</div>
+        <div class="profile">(66)</div>
         <div class="chat">
-          Shallow: yo moon crew<br>
-          PlayerX: gg wp<br>
-          <span class="blink">_</span>
+          <span class="blink">></span>
         </div>
       </div>
 
@@ -69,36 +63,37 @@
 
   <div class="game-area">
     <button class="game-btn">
-      <div class="game-title">Snake</div>
-      <div class="game-subtitle">Classic snake game</div>
+      <div class="game-title">Tic-Tac-Toe</div>
+      <div class="game-subtitle">Classic game</div>
     </button>
 
     <button class="game-btn">
-      <div class="game-title">Block Drop</div>
-      <div class="game-subtitle">Tetris style</div>
+      <div class="game-title">Dice-Race</div>
+      <div class="game-subtitle">Your Luck in Computer's Cpu</div>
     </button>
 
     <button class="game-btn">
-      <div class="game-title">Sumo Arena</div>
-      <div class="game-subtitle">Push opponents out</div>
+      <div class="game-title">The-Tournamnet</div>
+      <div class="game-subtitle">Combination Of Games</div>
     </button>
 
     <button class="game-btn">
-      <div class="game-title">Chat Cipher</div>
-      <div class="game-subtitle">Decode messages</div>
+      <div class="game-title">Guess_the_word</div>
+      <div class="game-subtitle">Take Your Dictionaries</div>
     </button>
 
     <button class="game-btn">
-      <div class="game-title">Zero-G Bounce</div>
-      <div class="game-subtitle">Space ball fun</div>
+      <div class="game-title">Guess_the_number</div>
+      <div class="game-subtitle">Let the 7yrs PLay</div>
     </button>
   </div>
 
   <div class="command-bar">
     <div class="command-inner">
       <span>$</span>
-      <input type="text" placeholder="ENTER COMMAND OR CHAT..." />
       <span class="blink">_</span>
+      <input type="text" placeholder="ENTER COMMAND OR CHAT..." />
+      
     </div>
   </div>
 
@@ -127,7 +122,4 @@
   </script>
 
 </body>
-
 </html>
-
-
