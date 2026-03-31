@@ -68,7 +68,7 @@ socket.on("play-game", (game) => {
   socket.emit("game-output", `Starting ${game}...\n`);
 
   // ✅ FIXED: Use python3 instead of python + proper error handling
-  const py = spawn("python3", ["-u", file]);
+  const py = spawn("python", ["-u", file]);
 
   socket.gameProcess = py;
 
