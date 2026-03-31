@@ -1,115 +1,147 @@
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
-const { spawn } = require("child_process");
+const express = require("express")
+const http = require("http")
+const { Server } = require("socket.io")
+const { spawn } = require("child_process")
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: { origin: "*" }
-});
+const app = express()
+const server = http.createServer(app)
+const io = new Server(server)
 
-// Serve static files (your HTML, CSS, JS)
-app.use(express.static("public"));
+app.use(express.static("public"))
 
-// ======================= IMPORTANT FOR RAILWAY =======================
-const PORT = process.env.PORT || 8080;
+let users = []
 
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`✅ Server running on port ${PORT}`);
-});
-
-let users = [];
-
-// ======================= SOCKET.IO =======================
-io.on("connection", (socket) => {
+io.on("connection", socket => {
 
   /* ---------------- USER JOIN ---------------- */
-  socket.on("join", (name) => {
-    socket.username = name;
-    users.push(name);
-    socket.slot = users.length - 1;
 
-    socket.emit("my-slot", socket.slot);
-    io.emit("users", users);
-  });
+  socket.on("join", name => {
 
-  /* ---------------- CHAT ---------------- */
-  socket.on("msg", (text) => {
+    socket.username = name
+    users.push(name)
+
+    socket.slot = users.length - 1
+
+    socket.emit("my-slot", socket.slot)
+
+    io.emit("users", users)
+
+  })
+
+
+  /* ---------------- CHAT MESSAGE ---------------- */
+
+  socket.on("msg", text => {
+
     io.emit("msg", {
       name: socket.username,
       text: text,
       slot: socket.slot
-    });
-  });
+    })
 
-  /* ---------------- PLAY GAME ---------------- */
-  socket.on("play-game", (game) => {
-    let file = "";
+  })
 
-    if (game === "tictactoe") file = "games/tic_tac_toe.py";
-    if (game === "dice") file = "games/dice_race.py";
-    if (game === "word") file = "games/guess_the_word.py";
-    if (game === "number") file = "games/guess_the_number.py";
 
-    if (file === "") {
-      socket.emit("game-output", "Game not found.\n");
-      return;
+  /* ---------------- PLAY PYTHON GAME ---------------- */
+
+  socket.on("play-game", game => {
+
+    let file = ""
+
+    if(game === "tictactoe") file = "games/tic_tac_toe.py"
+    if(game === "dice") file = "games/dice_race.py"
+    if(game === "word") file = "games/guess_the_word.py"
+    if(game === "number") file = "games/guess_the_number.py"
+
+    if(file === "") return
+
+
+    /* stop old game if running */
+
+    if(socket.gameProcess){
+      socket.gameProcess.kill()
+      socket.gameProcess = null
     }
 
-    // Kill any old running game
-    if (socket.gameProcess) {
-      socket.gameProcess.kill();
-      socket.gameProcess = null;
-    }
 
-    console.log(`🎮 Starting game: ${game} → ${file}`);
+    /* RUN PYTHON WITH UNBUFFERED OUTPUT */
 
-    socket.emit("game-output", `Starting ${game}...\n\n`);
+    const py = spawn("python", ["-u", file])
 
-    // Spawn Python with unbuffered output
-    const py = spawn("python3", ["-u", file]);
+    socket.gameProcess = py
 
-    socket.gameProcess = py;
 
-    // Python Output → Browser
-    py.stdout.on("data", (data) => {
-      socket.emit("game-output", data.toString());
-    });
+    /* PYTHON OUTPUT */
 
-    // Python Error
-    py.stderr.on("data", (err) => {
-      socket.emit("game-output", `<span style="color:red">Error: ${err.toString()}</span>\n`);
-    });
+    py.stdout.on("data", data => {
 
-    // Game Closed
-    py.on("close", (code) => {
-      socket.emit("game-output", `\nGame ended (code: ${code})\n`);
-      socket.gameProcess = null;
-    });
-  });
+      socket.emit("game-output", data.toString())
 
-  /* ---------------- GAME INPUT ---------------- */
-  socket.on("game-input", (text) => {
-    if (socket.gameProcess && socket.gameProcess.stdin) {
-      try {
-        socket.gameProcess.stdin.write(text + "\n");
-      } catch (err) {
-        socket.emit("game-output", "Input error.\n");
+    })
+
+
+    /* PYTHON ERROR */
+
+    py.stderr.on("data", err => {
+
+      socket.emit("game-output", "Error: " + err.toString())
+
+    })
+
+
+    /* GAME END */
+
+    py.on("close", () => {
+
+      socket.emit("game-output", "\nGame ended.")
+      socket.gameProcess = null
+
+    })
+
+  })
+
+
+  /* ---------------- GAME INPUT FROM BROWSER ---------------- */
+
+  socket.on("game-input", text => {
+
+    if(socket.gameProcess){
+
+      try{
+        socket.gameProcess.stdin.write(text + "\n")
       }
-    }
-  });
+      catch(err){
+        socket.emit("game-output","Input error.")
+      }
 
-  /* ---------------- DISCONNECT ---------------- */
+    }
+
+  })
+
+
+  /* ---------------- USER DISCONNECT ---------------- */
+
   socket.on("disconnect", () => {
-    if (socket.slot !== undefined) {
-      users.splice(socket.slot, 1);
-      io.emit("users", users);
+
+    if(socket.slot !== undefined){
+
+      users.splice(socket.slot,1)
+      io.emit("users", users)
+
     }
 
-    if (socket.gameProcess) {
-      socket.gameProcess.kill();
-      socket.gameProcess = null;
+    if(socket.gameProcess){
+
+      socket.gameProcess.kill()
+      socket.gameProcess = null
+
     }
-  });
-});
+
+  })
+
+})
+
+
+server.listen(3000, () => {
+  console.log("Server running on http://localhost:3000")
+})
