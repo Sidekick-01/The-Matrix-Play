@@ -5,13 +5,17 @@ def clear():
     print("\033c", end="")
 # this is teh grid of the game 
 def game_grid(pos):
-    print()
-    print(pos[0], "|", pos[1], "|", pos[2])
-    print("--+---+--")
-    print(pos[3], "|", pos[4], "|", pos[5])
-    print("--+---+--")
-    print(pos[6], "|", pos[7], "|", pos[8])
-    print()
+    """Clean grid that works well when mirrored to browser"""
+    grid = f"""
+<div style="background:#000; color:#00ff41; padding:18px; margin:12px 0; border:2px solid #00ff41; border-radius:10px; font-family:monospace; font-size:17px; line-height:1.35; white-space:pre;">
+ {pos[0]} │ {pos[1]} │ {pos[2]} 
+───┼───┼───
+ {pos[3]} │ {pos[4]} │ {pos[5]} 
+───┼───┼───
+ {pos[6]} │ {pos[7]} │ {pos[8]} 
+</div>
+"""
+    print(grid)
 
 def check_winner(pos, s):
     # these are the winning positions on the grid
