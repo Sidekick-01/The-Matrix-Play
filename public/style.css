@@ -194,27 +194,42 @@ body {
   .squad { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
   .squad[class*="hover-"] { transform: none !important; }
 }
+/* ===================== BLACK MONITOR STYLE FOR GAME TERMINAL ===================== */
 
 #gameTerminal {
-    min-height: 280px !important;     /* smaller height */
-    max-height: 320px !important;     /* prevents it from growing too much */
-    padding: 12px !important;
-    font-size: 15px !important;       /* slightly smaller text */
-    line-height: 1.35 !important;
-    margin: 10px auto !important;
-    width: 100% !important;
-    max-width: 420px !important;
-}
-
-#gameTerminal div {
-    margin: 8px 0 !important;
-    padding: 12px !important;
+    background: #0a0a0a !important;           /* Deep black monitor look */
+    color: #00ff41 !important;
+    border: 3px solid #00ff4188 !important;   /* Nice glowing green border */
+    border-radius: 12px !important;
+    padding: 20px !important;                 /* Good padding */
+    font-family: 'Fira Code', 'Courier New', monospace !important;
     font-size: 15.5px !important;
-}
-
-#gameScreen #gameTerminal {
-    height: auto !important;
+    line-height: 1.45 !important;
+    min-height: 320px !important;
+    max-height: 380px !important;             /* Compact but not too small */
     overflow-y: auto !important;
+    box-shadow: 
+        0 0 25px rgba(0, 255, 65, 0.25),
+        inset 0 0 30px rgba(0, 0, 0, 0.8) !important;  /* Inner glow for monitor feel */
+    width: 100% !important;
+    max-width: 460px !important;
+    margin: 15px auto !important;
 }
 
+
+#gameTerminal div,#gameTerminal pre,#gameTerminal span {
+    background: transparent !important;
+    margin: 10px 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+}
+
+#gameInput {
+    background: #111 !important;
+    border: 2px solid #00ff4188 !important;
+    color: #00ff9d !important;
+    padding: 12px !important;
+    font-family: 'Fira Code', monospace !important;
+    border-radius: 6px !important;
+}
 
