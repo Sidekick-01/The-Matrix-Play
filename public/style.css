@@ -193,7 +193,7 @@ body {
   .monitor:hover { transform: translateY(-8px) scale(1.06) !important; }
   .squad { gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
   .squad[class*="hover-"] { transform: none !important; }
-
+}
   /* ===================== TIC TAC TOE GRID FIX ===================== */
 /* This fixes the broken/disfigured grid without breaking other things */
 
@@ -238,4 +238,4 @@ body {
     max-width: 420px !important;
     margin: 0 auto !important;
 }
-}
+
