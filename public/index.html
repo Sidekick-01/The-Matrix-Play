@@ -1,121 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Matrix Play</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="style.css" />
-<script src="script.js" defer></script>
-</head>
-<body>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Matrix Play</title>
 
-  <div class="header">
-    <div> The Milky Way <span>Earth</span></div>
-  </div>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css"/>
 
-  <div class="scene" id="scene">
-    <div class="squad" id="squad">
-
-      <div class="monitor monitor-leftmost">
-        <div class="status">Commander - 1 </div>
-        <div class="profile">|00|</div>
-        <div class="chat">
-          <span class="blink">></span>
-        </div>
-      </div>
-
-      <div class="monitor monitor-left">
-        <div class="status dim">Commander - 2</div>
-        <div class="profile dim">(00)</div>
-        <div class="chat dim">
-          <span class="blink">></span>
-        </div>
-      </div>
-
-      <div class="monitor monitor-center">
-        <div class="status bright">COMMANDER (YOU) – ACTIVE</div>
-        <div class="profile">{oo}</div>
-        <div class="chat bright">
-          Earth looks small from here.<br>
-          All terminals nominal.<br>
-          Awaiting orders...
-        </div>
-      </div>
-
-      <div class="monitor monitor-right">
-        <div class="status">SNAKE_SYSTEM – LIVE</div>
-        <div class="profile">{99}</div>
-        <div class="chat">
-          <span class="blink">></span>
-        </div>
-      </div>
-
-      <div class="monitor monitor-rightmost">
-        <div class="status">LOBBY_CHAT – OPEN</div>
-        <div class="profile">(66)</div>
-        <div class="chat">
-          <span class="blink">></span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="game-area">
-    <button class="game-btn">
-      <div class="game-title">Tic-Tac-Toe</div>
-      <div class="game-subtitle">Classic game</div>
-    </button>
-
-    <button class="game-btn">
-      <div class="game-title">Dice-Race</div>
-      <div class="game-subtitle">Your Luck in Computer's Cpu</div>
-    </button>
-
-    <button class="game-btn">
-      <div class="game-title">The-Tournamnet</div>
-      <div class="game-subtitle">Combination Of Games</div>
-    </button>
-
-    <button class="game-btn">
-      <div class="game-title">Guess_the_word</div>
-      <div class="game-subtitle">Take Your Dictionaries</div>
-    </button>
-
-    <button class="game-btn">
-      <div class="game-title">Guess_the_number</div>
-      <div class="game-subtitle">Let the 7yrs PLay</div>
-    </button>
-  </div>
-
-  <div class="command-bar">
-    <div class="command-inner">
-      <span>$</span>
-      <span class="blink">_</span>
-      <input type="text" placeholder="ENTER COMMAND OR CHAT..." />
-      
-    </div>
-  </div>
 <script src="/socket.io/socket.io.js"></script>
 
+</head>
+
+<body>
+
+<!-- Username screen -->
+<div id="uscreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;">
+<div style="background:#000;padding:2rem;border:2px solid #0f0;border-radius:8px;text-align:center;">
+<div style="color:#0f0;font-size:1.5rem;margin-bottom:1rem;">ENTER YOUR CALLSIGN</div>
+
+<input id="uname" type="text" placeholder="your name..." style="background:#000;border:1px solid #0f0;color:#0f0;padding:0.8rem;width:280px;font-size:1.2rem;margin-bottom:1rem;">
+
+<button id="joinbtn" style="background:#0a0;color:#000;padding:0.8rem 2rem;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">
+JOIN
+</button>
+
+</div>
+</div>
+
+
+<div class="header">
+<div> The Milky Way <span>Earth</span></div>
+</div>
+
+
+<div class="scene" id="scene">
+<div class="squad" id="squad">
+
+<div class="monitor monitor-leftmost" id="slot0">
+<div class="status">Commander - 1 – OFFLINE</div>
+<div class="profile">|00|</div>
+<div class="chat" id="chat0">
+<span class="blink">></span>
+</div>
+</div>
+
+<div class="monitor monitor-left" id="slot1">
+<div class="status dim">Commander - 2 – OFFLINE</div>
+<div class="profile dim">(00)</div>
+<div class="chat dim" id="chat1">
+<span class="blink">></span>
+</div>
+</div>
+
+<div class="monitor monitor-center" id="slot2">
+<div class="status bright">COMMANDER (YOU) – ACTIVE</div>
+<div class="profile">{oo}</div>
+<div class="chat bright" id="chat2">
+<span class="blink">_</span>
+</div>
+</div>
+
+<div class="monitor monitor-right" id="slot3">
+<div class="status dim">Commander - 4 – OFFLINE</div>
+<div class="profile dim">{99}</div>
+<div class="chat dim" id="chat3">
+<span class="blink">></span>
+</div>
+</div>
+
+<div class="monitor monitor-rightmost" id="slot4">
+<div class="status dim">Commander - 5 – OFFLINE</div>
+<div class="profile dim">(66)</div>
+<div class="chat dim" id="chat4">
+<span class="blink">></span>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="game-area">
+
+<button class="game-btn" id="3tbtn">
+<div class="game-title">Tic-Tac-Toe</div>
+<div class="game-subtitle">Classic game</div>
+</button>
+
+<button class="game-btn" id="dracebtn">
+<div class="game-title">Dice-Race</div>
+<div class="game-subtitle">Your Luck in Computer's Cpu</div>
+</button>
+
+<button class="game-btn" id="wordbtn">
+<div class="game-title">Guess_the_word</div>
+<div class="game-subtitle">Take Your Dictionaries</div>
+</button>
+
+<button class="game-btn" id="numbtn">
+<div class="game-title">Guess_the_number</div>
+<div class="game-subtitle">Let the 7yrs PLay</div>
+</button>
+
+</div>
+
+
+<!-- GAME TERMINAL -->
+<div id="gameScreen" style="display:none;padding:20px;font-family:monospace;color:#00ff00">
+
+<button id="backBtn" style="margin-bottom:15px;padding:8px 15px;background:#111;border:1px solid #0f0;color:#0f0">
+← Back
+</button>
+
+<h2 id="gameTitle"></h2>
+
+<div id="gameTerminal"
+style="
+background:#000;
+border:1px solid #0f0;
+height:350px;
+overflow-y:auto;
+padding:10px;
+white-space:pre-wrap;
+margin-bottom:10px;
+"></div>
+
+<input
+id="gameInput"
+type="text"
+placeholder="type command..."
+style="
+width:100%;
+padding:10px;
+background:#000;
+border:1px solid #0f0;
+color:#0f0;
+font-family:monospace;
+"
+/>
+
+</div>
+
+
+<div class="command-bar">
+<div class="command-inner">
+<span>$</span>
+<span class="blink">_</span>
+<input type="text" id="msginput" placeholder="ENTER COMMAND OR CHAT..."/>
+</div>
+</div>
+
+
 <script>
+
+/* ---------------- SOCKET CHAT SYSTEM (UNCHANGED) ---------------- */
+
 const socket = io()
 
-const input = document.querySelector("input")
-const chat = document.querySelector(".monitor-rightmost .chat")
+const uscreen=document.getElementById('uscreen')
+const uname=document.getElementById('uname')
+const joinbtn=document.getElementById('joinbtn')
+const msginput=document.getElementById('msginput')
 
-input.addEventListener("keydown", function(e){
-  if(e.key === "Enter"){
-    socket.emit("chat message", input.value)
-    input.value = ""
-  }
+let myslot=-1
+let myname=""
+let users=[]
+
+joinbtn.onclick=()=>{
+
+const n=uname.value.trim()
+
+if(!n){
+alert("enter name")
+return
+}
+
+myname=n
+uscreen.style.display="none"
+
+socket.emit("join",n)
+
+}
+
+uname.onkeypress=e=>{
+if(e.key==="Enter") joinbtn.click()
+}
+
+socket.on("my-slot",slot=>{
+
+myslot=slot
+
+const centerStatus=document.querySelector("#slot2 .status")
+centerStatus.textContent="YOU – "+myname
+
 })
 
-socket.on("chat message", function(msg){
-  chat.innerHTML += msg + "<br>"
+socket.on("users",list=>{
+
+users=list
+
+const display=[null,null,null,null,null]
+
+display[2]=users[myslot]
+
+if(myslot-1>=0) display[1]=users[myslot-1]
+if(myslot-2>=0) display[0]=users[myslot-2]
+
+if(myslot+1<users.length) display[3]=users[myslot+1]
+if(myslot+2<users.length) display[4]=users[myslot+2]
+
+for(let i=0;i<5;i++){
+
+const mon=document.getElementById("slot"+i)
+const status=mon.querySelector(".status")
+const profile=mon.querySelector(".profile")
+const chat=document.getElementById("chat"+i)
+
+if(display[i]){
+
+mon.classList.remove("dim")
+status.classList.remove("dim")
+profile.classList.remove("dim")
+chat.classList.remove("dim")
+
+if(i!==2){
+status.textContent=display[i]
+}
+
+profile.textContent=display[i][0].toUpperCase()
+
+}
+else{
+
+mon.classList.add("dim")
+status.classList.add("dim")
+profile.classList.add("dim")
+chat.classList.add("dim")
+
+if(i!==2){
+status.textContent="Commander – OFFLINE"
+}
+
+profile.textContent="?"
+
+}
+
+}
+
 })
+
+msginput.onkeypress=e=>{
+
+if(e.key==="Enter"){
+
+const text=msginput.value.trim()
+
+if(!text||myslot===-1) return
+
+socket.emit("msg",text)
+
+msginput.value=""
+
+}
+
+}
+
+socket.on("msg",data=>{
+
+let displaySlot=2
+
+if(data.slot===myslot) displaySlot=2
+else if(data.slot===myslot-1) displaySlot=1
+else if(data.slot===myslot-2) displaySlot=0
+else if(data.slot===myslot+1) displaySlot=3
+else if(data.slot===myslot+2) displaySlot=4
+else return
+
+const chat=document.getElementById("chat"+displaySlot)
+
+const line=document.createElement("div")
+line.textContent=data.name+": "+data.text
+
+chat.appendChild(line)
+
+chat.scrollTop=chat.scrollHeight
+
+})
+
+
+/* ---------------- GAME TERMINAL ---------------- */
+
+const gameScreen = document.getElementById("gameScreen")
+const terminal = document.getElementById("gameTerminal")
+const gameInput = document.getElementById("gameInput")
+const gameTitle = document.getElementById("gameTitle")
+
+
+function openGameUI(name){
+
+document.querySelector(".scene").style.display="none"
+document.querySelector(".game-area").style.display="none"
+
+gameScreen.style.display="block"
+
+gameTitle.innerText = name
+terminal.innerHTML=""
+
+gameInput.focus()
+
+}
+
+document.getElementById("backBtn").onclick=()=>{
+
+gameScreen.style.display="none"
+
+document.querySelector(".scene").style.display="block"
+document.querySelector(".game-area").style.display="block"
+
+}
+
+
+/* ---------------- GAME BUTTONS ---------------- */
+
+document.getElementById("3tbtn").onclick = ()=>{
+openGameUI("Tic Tac Toe")
+socket.emit("play-game","tictactoe")
+}
+
+document.getElementById("dracebtn").onclick = ()=>{
+openGameUI("Dice Race")
+socket.emit("play-game","dice")
+}
+
+document.getElementById("wordbtn").onclick = ()=>{
+openGameUI("Guess The Word")
+socket.emit("play-game","word")
+}
+
+document.getElementById("numbtn").onclick = ()=>{
+openGameUI("Guess The Number")
+socket.emit("play-game","number")
+}
+
+
+/* ---------------- TERMINAL OUTPUT ---------------- */
+
+socket.on("game-output", text=>{
+
+terminal.innerHTML += text + "<br>"
+terminal.scrollTop = terminal.scrollHeight
+
+})
+
+
+/* ---------------- TERMINAL INPUT ---------------- */
+
+gameInput.addEventListener("keypress", e=>{
+
+if(e.key !== "Enter") return
+
+const value = gameInput.value
+
+terminal.innerHTML += "<span style='color:#0ff'>> "+value+"</span><br>"
+
+socket.emit("game-input", value)
+
+gameInput.value=""
+
+})
+
 </script>
-</body>
 
+</body>
 </html>
