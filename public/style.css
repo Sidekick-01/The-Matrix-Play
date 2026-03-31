@@ -196,10 +196,5 @@ body {
 }
   
 
-/* Make sure the terminal doesn't shrink unexpectedly */
-#gameScreen #gameTerminal {
-    width: 100% !important;
-    max-width: 420px !important;
-    margin: 0 auto !important;
-}
+
 
