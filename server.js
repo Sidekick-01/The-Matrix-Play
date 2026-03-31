@@ -44,6 +44,7 @@ io.on("connection", socket => {
 
   /* ---------------- PLAY PYTHON GAME ---------------- */
 
+/* ---------------- PLAY PYTHON GAME ---------------- */
 socket.on("play-game", (game) => {
   let file = "";
 
@@ -57,7 +58,6 @@ socket.on("play-game", (game) => {
     return;
   }
 
-  // Kill old game if running
   if (socket.gameProcess) {
     socket.gameProcess.kill();
     socket.gameProcess = null;
@@ -67,28 +67,24 @@ socket.on("play-game", (game) => {
 
   socket.emit("game-output", `Starting ${game}...\n`);
 
-  // ✅ FIXED: Use python3 instead of python + proper error handling
-  const py = spawn("python", ["-u", file]);
+  // ✅ FIXED: Use python3 (Railway has python3, not python)
+  const py = spawn("python3", ["-u", file]);
 
   socket.gameProcess = py;
 
-  // Output from Python
   py.stdout.on("data", (data) => {
     socket.emit("game-output", data.toString());
   });
 
-  // Error from Python
   py.stderr.on("data", (err) => {
     socket.emit("game-output", `<span style="color:red">Error: ${err.toString()}</span>\n`);
   });
 
-  // Handle spawn error (this prevents the crash you saw)
   py.on("error", (err) => {
     console.error("Spawn error:", err);
     socket.emit("game-output", `<span style="color:red">Failed to start Python: ${err.message}</span>\n`);
   });
 
-  // Game closed
   py.on("close", (code) => {
     socket.emit("game-output", `\nGame ended (code: ${code})\n`);
     socket.gameProcess = null;
