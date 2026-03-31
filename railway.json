@@ -1,0 +1,4 @@
+{
+  "buildCommand": "npm install && apt-get update && apt-get install -y python3",
+  "startCommand": "node server.js"
+}
