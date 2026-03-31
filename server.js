@@ -44,62 +44,56 @@ io.on("connection", socket => {
 
   /* ---------------- PLAY PYTHON GAME ---------------- */
 
-  socket.on("play-game", game => {
+socket.on("play-game", (game) => {
+  let file = "";
 
-    let file = ""
+  if (game === "tictactoe") file = "games/tic_tac_toe.py";
+  if (game === "dice")      file = "games/dice_race.py";
+  if (game === "word")      file = "games/guess_the_word.py";
+  if (game === "number")    file = "games/guess_the_number.py";
 
-    if(game === "tictactoe") file = "games/tic_tac_toe.py"
-    if(game === "dice") file = "games/dice_race.py"
-    if(game === "word") file = "games/guess_the_word.py"
-    if(game === "number") file = "games/guess_the_number.py"
+  if (file === "") {
+    socket.emit("game-output", "Game not found.\n");
+    return;
+  }
 
-    if(file === "") return
+  // Kill old game if running
+  if (socket.gameProcess) {
+    socket.gameProcess.kill();
+    socket.gameProcess = null;
+  }
 
+  console.log(`🎮 Starting ${game} → ${file}`);
 
-    /* stop old game if running */
+  socket.emit("game-output", `Starting ${game}...\n`);
 
-    if(socket.gameProcess){
-      socket.gameProcess.kill()
-      socket.gameProcess = null
-    }
+  // ✅ FIXED: Use python3 instead of python + proper error handling
+  const py = spawn("python3", ["-u", file]);
 
+  socket.gameProcess = py;
 
-    /* RUN PYTHON WITH UNBUFFERED OUTPUT */
+  // Output from Python
+  py.stdout.on("data", (data) => {
+    socket.emit("game-output", data.toString());
+  });
 
-    const py = spawn("python", ["-u", file])
+  // Error from Python
+  py.stderr.on("data", (err) => {
+    socket.emit("game-output", `<span style="color:red">Error: ${err.toString()}</span>\n`);
+  });
 
-    socket.gameProcess = py
+  // Handle spawn error (this prevents the crash you saw)
+  py.on("error", (err) => {
+    console.error("Spawn error:", err);
+    socket.emit("game-output", `<span style="color:red">Failed to start Python: ${err.message}</span>\n`);
+  });
 
-
-    /* PYTHON OUTPUT */
-
-    py.stdout.on("data", data => {
-
-      socket.emit("game-output", data.toString())
-
-    })
-
-
-    /* PYTHON ERROR */
-
-    py.stderr.on("data", err => {
-
-      socket.emit("game-output", "Error: " + err.toString())
-
-    })
-
-
-    /* GAME END */
-
-    py.on("close", () => {
-
-      socket.emit("game-output", "\nGame ended.")
-      socket.gameProcess = null
-
-    })
-
-  })
-
+  // Game closed
+  py.on("close", (code) => {
+    socket.emit("game-output", `\nGame ended (code: ${code})\n`);
+    socket.gameProcess = null;
+  });
+});
 
   /* ---------------- GAME INPUT FROM BROWSER ---------------- */
 
